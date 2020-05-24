@@ -31,6 +31,7 @@ public class Main {
         handler.addServlet(new ServletHolder(new Choice()),"/choice");
         handler.addServlet(new ServletHolder(new List(engine)),"/liked");
         handler.addServlet(new ServletHolder(new Login()),"/login");
+        handler.addServlet(new ServletHolder(new Login()),"/");
         handler.addServlet(new ServletHolder(new Logout()),"/logout");
         handler.addServlet(new ServletHolder(new Chat(engine)),"/message");
         handler.addServlet(new ServletHolder(new StaticServlet("css")), "/css/*");
