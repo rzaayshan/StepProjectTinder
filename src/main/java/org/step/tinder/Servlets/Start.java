@@ -2,30 +2,31 @@ package org.step.tinder.Servlets;
 
 
 import org.step.tinder.DAO.DaoLikes;
-import org.step.tinder.Helpers.Profile;
-import org.step.tinder.Helpers.TemplateEngine;
+import org.step.tinder.entity.Profile;
+import org.step.tinder.entity.TemplateEngine;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Start extends HttpServlet {
     private final TemplateEngine engine;
+    private final Connection conn;
+
     static LinkedList<Profile> unlikes;
 
-    public Start(TemplateEngine engine) {
-        DaoLikes daoLikes = new DaoLikes();
-        daoLikes.connect();
+    public Start(TemplateEngine engine, Connection conn) {
+        this.conn = conn;
         this.engine = engine;
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        DaoLikes daoLikes = new DaoLikes();
-        daoLikes.connect();
+        DaoLikes daoLikes = new DaoLikes(conn);
         String uname = req.getParameter("uname");
         unlikes = daoLikes.getLikes(uname,false);
         if(unlikes.isEmpty()){

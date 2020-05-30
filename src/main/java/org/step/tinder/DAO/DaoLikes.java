@@ -1,7 +1,7 @@
 package org.step.tinder.DAO;
 
-import org.step.tinder.Helpers.Profile;
-import org.step.tinder.db.ConnDetails;
+import org.step.tinder.entity.Profile;
+
 
 
 import java.sql.*;
@@ -9,25 +9,16 @@ import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 public class DaoLikes {
-    private static final String URL = ConnDetails.url;
-    private static final String UNAME = ConnDetails.username;
-    private static final String PWD = ConnDetails.password;
+    private final Connection conn;
 
-    private Connection conn;
-
-    public void connect(){
-        try {
-            this.conn = DriverManager.getConnection(URL, UNAME, PWD);
-        }
-        catch (SQLException e){
-            System.out.println(e.getMessage());
-        }
+    public DaoLikes(Connection conn) {
+        this.conn = conn;
     }
+
 
     public LinkedList<Profile> getLikes(String who, boolean isLike){
         try{
-            DaoUsers daoUsers = new DaoUsers();
-            daoUsers.connect();
+            DaoUsers daoUsers = new DaoUsers(conn);
             LinkedList<Profile> profiles = daoUsers.getProfiles();
             String query = "SELECT * FROM likes WHERE who=?";
             PreparedStatement st = conn.prepareStatement(query);

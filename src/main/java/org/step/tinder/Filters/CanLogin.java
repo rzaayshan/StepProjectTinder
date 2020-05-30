@@ -7,9 +7,15 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
 
 public class CanLogin implements Filter {
-    DaoUsers users = new DaoUsers();
+    private final Connection conn;
+
+    public CanLogin(Connection conn) {
+        this.conn = conn;
+    }
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -17,11 +23,11 @@ public class CanLogin implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        DaoUsers users = new DaoUsers(conn);
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         String uname = req.getParameter("uname");
         String pass = req.getParameter("pass");
-        users.connect();
         if(users.checkUser(uname,pass)){
             Cookie cookie1 = new Cookie("uname",uname);
             Cookie cookie2 = new Cookie("pass",pass);
