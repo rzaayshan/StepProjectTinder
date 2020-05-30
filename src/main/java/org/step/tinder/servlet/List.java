@@ -1,4 +1,4 @@
-package org.step.tinder.Servlets;
+package org.step.tinder.servlet;
 
 import org.step.tinder.DAO.DaoLikes;
 import org.step.tinder.entity.Profile;

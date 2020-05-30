@@ -1,4 +1,4 @@
-package org.step.tinder.Filters;
+package org.step.tinder.filter;
 
 import org.step.tinder.DAO.DaoUsers;
 

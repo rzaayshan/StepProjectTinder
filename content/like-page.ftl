@@ -29,13 +29,13 @@
                 </div>
 
                     <div class="col-12 col-lg-6">
-                        <form method="GET" action="/choice">
+                        <form method="GET" action="/like">
                             <input type="submit" class="btn btn-outline-danger btn-block" name="choice" value="Dislike">
                             <input type="hidden" name="uname" value=${uname} >
                         </form>
                     </div>
                     <div class="col-12 col-lg-6">
-                        <form method="GET" action="/choice">
+                        <form method="GET" action="/like">
                             <input type="submit" class="btn btn-outline-success btn-block" name="choice" value="Like">
                             <input type="hidden" name="uname" value=${uname} >
                         </form>
