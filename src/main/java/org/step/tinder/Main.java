@@ -21,7 +21,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         DbSetup.migrate(HerokuEnv.jdbc_url(),HerokuEnv.jdbc_username(),HerokuEnv.jdbc_password());
-        Connection conn = DbConn.create(HerokuEnv.jdbc_url());
+        Connection conn = DbConn.create(HerokuEnv.jdbc_url(),HerokuEnv.jdbc_username(),HerokuEnv.jdbc_password());
 
         Server server = new Server(HerokuEnv.port());
 
@@ -38,7 +38,6 @@ public class Main {
         handler.addServlet(new ServletHolder(new Logout()),"/logout");
         handler.addServlet(new ServletHolder(new Chat(engine, conn)),"/message");
         handler.addServlet(new ServletHolder(new StaticServlet("css")), "/css/*");
-
         handler.addFilter(new FilterHolder(new CanLogin(conn)),"/start", EnumSet.of(DispatcherType.REQUEST));
         handler.addFilter(new FilterHolder(new IsLogin(conn)),"/users", EnumSet.of(DispatcherType.REQUEST));
         handler.addFilter(new FilterHolder(new IsLogin(conn)),"/liked", EnumSet.of(DispatcherType.REQUEST));
