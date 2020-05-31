@@ -36,7 +36,7 @@ public class Main {
         handler.addServlet(new ServletHolder(new Login()),"/");
         handler.addServlet(new ServletHolder(new Logout()),"/logout");
         handler.addServlet(new ServletHolder(new Chat(engine, conn)),"/message");
-        handler.addServlet(new ServletHolder(new StaticServlet("css")), "src/main/resources/content/css/*");
+        handler.addServlet(new ServletHolder(new StaticServlet("css")), "/src/main/resources/content/css/*");
         handler.addFilter(new FilterHolder(new CanLogin(conn)),"/start", EnumSet.of(DispatcherType.REQUEST));
         handler.addFilter(new FilterHolder(new IsLogin(conn)),"/like", EnumSet.of(DispatcherType.REQUEST));
         handler.addFilter(new FilterHolder(new IsLogin(conn)),"/list", EnumSet.of(DispatcherType.REQUEST));
