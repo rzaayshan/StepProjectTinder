@@ -28,9 +28,11 @@ public class Like extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         addChoice(req);
-        checkedAll(resp);
+        if(isCheckedAll()){
+            i=0;
+            resp.sendRedirect("/list");
+        }
         HashMap<String,Object> data = createData();
-
         engine.render2("like-page.ftl", data, resp);
     }
 
@@ -43,11 +45,8 @@ public class Like extends HttpServlet {
             daoLikes.addLikes(who,whom);
     }
 
-    private void checkedAll(HttpServletResponse resp) throws IOException {
-        if(++i>=unlikes.size()){
-            i=0;
-            resp.sendRedirect("/list");
-        }
+    private boolean isCheckedAll(){
+        return ++i>=unlikes.size();
     }
 
     private HashMap<String, Object> createData(){
