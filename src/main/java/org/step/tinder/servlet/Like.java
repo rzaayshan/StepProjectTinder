@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,7 +19,6 @@ public class Like extends HttpServlet {
     private static int i=0;
     private final TemplateEngine engine;
     private final DaoLikes daoLikes;
-    private final LinkedList<Profile> unlikes = Start.unlikes;
 
     public Like(TemplateEngine engine, Connection conn) {
         this.engine = engine;
@@ -28,11 +28,11 @@ public class Like extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         addChoice(req);
-        if(++i>=unlikes.size()){
+        if(isCheckedAll(Start.unlikes)){
             i=0;
             resp.sendRedirect("/list");
         }
-        HashMap<String,Object> data = createData();
+        HashMap<String,Object> data = createData(Start.unlikes);
         engine.render2("like-page.ftl", data, resp);
     }
 
@@ -45,11 +45,11 @@ public class Like extends HttpServlet {
             daoLikes.addLikes(who,whom);
     }
 
-    private boolean isCheckedAll(){
+    private boolean isCheckedAll(LinkedList<Profile> unlikes){
         return ++i>=unlikes.size();
     }
 
-    private HashMap<String, Object> createData(){
+    private HashMap<String, Object> createData(LinkedList<Profile> unlikes){
         HashMap<String, Object> data = new HashMap<>();
         data.put("uname",unlikes.get(i).getUname());
         data.put("image",unlikes.get(i).getImage());
