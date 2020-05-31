@@ -29,7 +29,7 @@ public class Main {
 
         TemplateEngine engine = TemplateEngine.folder("content");
 
-        //handler.addServlet(new ServletHolder(new Start(engine, conn)),"dd7nlooejjena8@ec2-35-171-31-33.compute-1.amazonaws.com/start");
+        //handler.addServlet(new ServletHolder(new Start(engine, conn)),"/start");
         handler.addServlet(new ServletHolder(new Like(engine, conn)),"/like");
         handler.addServlet(new ServletHolder(new List(engine, conn)),"/list");
         handler.addServlet(new ServletHolder(new Login()),"/login");
@@ -37,7 +37,7 @@ public class Main {
         handler.addServlet(new ServletHolder(new Logout()),"/logout");
         handler.addServlet(new ServletHolder(new Chat(engine, conn)),"/message");
         handler.addServlet(new ServletHolder(new StaticServlet("css")), "/css/*");
-        handler.addFilter(new FilterHolder(new CanLogin(conn)),"/like", EnumSet.of(DispatcherType.REQUEST));
+        handler.addFilter(new FilterHolder(new CanLogin(conn)),"/start", EnumSet.of(DispatcherType.REQUEST));
         handler.addFilter(new FilterHolder(new IsLogin(conn)),"/like", EnumSet.of(DispatcherType.REQUEST));
         handler.addFilter(new FilterHolder(new IsLogin(conn)),"/list", EnumSet.of(DispatcherType.REQUEST));
         handler.addFilter(new FilterHolder(new IsLogin(conn)),"/message", EnumSet.of(DispatcherType.REQUEST));

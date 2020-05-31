@@ -26,22 +26,23 @@ public class CanLogin implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
-        if(req.getMethod().toUpperCase().equals("POST")){
-            DaoUsers users = new DaoUsers(conn);
-            String uname = req.getParameter("uname");
-            String pass = req.getParameter("pass");
-            if(users.checkUser(uname,pass)){
-                Cookie cookie1 = new Cookie("uname",uname);
-                Cookie cookie2 = new Cookie("pass",pass);
-                resp.addCookie(cookie1);
-                resp.addCookie(cookie2);
-                chain.doFilter(req,resp);
-            }
-            else resp.sendRedirect("/login");
+        DaoUsers users = new DaoUsers(conn);
+        String uname = req.getParameter("uname");
+        String pass = req.getParameter("pass");
+        if(users.checkUser(uname,pass)){
+            Cookie cookie1 = new Cookie("uname",uname);
+            Cookie cookie2 = new Cookie("pass",pass);
+            resp.addCookie(cookie1);
+            resp.addCookie(cookie2);
+            chain.doFilter(req,resp);
         }
-
-
+        else resp.sendRedirect("/login");
     }
+
+
+
+
+
 
     @Override
     public void destroy() {

@@ -3,8 +3,6 @@ package org.step.tinder.servlet;
 import org.step.tinder.DAO.DaoLikes;
 import org.step.tinder.entity.Profile;
 import org.step.tinder.entity.TemplateEngine;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,26 +16,12 @@ import java.util.LinkedList;
 public class Like extends HttpServlet {
     private static int i=0;
     private final TemplateEngine engine;
-    private final Connection conn;
-    static LinkedList<Profile> unlikes;
+    private final LinkedList<Profile> unlikes=Start.unlikes;
     private final DaoLikes daoLikes;
 
     public Like(TemplateEngine engine, Connection conn) {
         this.engine = engine;
-        this.conn = conn;
         this.daoLikes=new DaoLikes(conn);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        getUnlikes(req);
-        if(unlikes.isEmpty()){
-            resp.sendRedirect("/list");
-        }
-        else{
-            HashMap<String, Object> data = createData();
-            engine.render2("like-page.ftl", data, resp);
-        }
     }
 
     @Override
@@ -51,11 +35,6 @@ public class Like extends HttpServlet {
         engine.render2("like-page.ftl", data, resp);
     }
 
-    private void getUnlikes(HttpServletRequest req){
-        DaoLikes daoLikes = new DaoLikes(conn);
-        String uname = req.getParameter("uname");
-        unlikes = daoLikes.getLikes(uname,false);
-    }
 
     private void addChoice(HttpServletRequest req){
         String whom = req.getParameter("uname");
