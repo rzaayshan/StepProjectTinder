@@ -43,7 +43,7 @@ public class Chat extends HttpServlet {
         data.put("from",from);
         data.put("image",daoUsers.get(to).map(User::getImage));
 
-        engine.render2("chat.ftl", data, resp);
+        engine.render("chat.ftl", data, resp);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class Chat extends HttpServlet {
         data.put("to",to);
         data.put("from",from);
 
-        engine.render2("chat.ftl", data, resp);
+        engine.render("chat.ftl", data, resp);
 
     }
 }

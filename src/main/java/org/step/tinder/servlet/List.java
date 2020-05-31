@@ -30,6 +30,6 @@ public class List extends HttpServlet {
         LinkedList<User> liked = daoLikes.getLikes(uname,true);
         HashMap<String, Object> data = new HashMap<>();
         data.put("users",liked);
-        engine.render2("people-list.ftl", data, resp);
+        engine.render("people-list.ftl", data, resp);
     }
 }

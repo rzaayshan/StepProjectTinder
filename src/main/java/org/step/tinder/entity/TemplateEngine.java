@@ -32,16 +32,7 @@ public class TemplateEngine {
     return new TemplateEngine(path);
   }
 
-  public void render(String template, HashMap<String, String> data, HttpServletResponse resp) {
-    resp.setCharacterEncoding(String.valueOf(StandardCharsets.UTF_8));
-
-    try (PrintWriter w = resp.getWriter()) {
-      conf.getTemplate(template).process(data, w);
-    } catch (TemplateException | IOException e) {
-      throw new RuntimeException("Freemarker error", e);
-    }
-  }
-  public void render2(String template, HashMap<String, Object> data, HttpServletResponse resp) {
+  public void render(String template, HashMap<String, Object> data, HttpServletResponse resp) {
     resp.setCharacterEncoding(String.valueOf(StandardCharsets.UTF_8));
 
     try (PrintWriter w = resp.getWriter()) {

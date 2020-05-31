@@ -34,7 +34,7 @@ public class LikeServlet extends HttpServlet {
             resp.sendRedirect("/list");
         }
         HashMap<String,Object> data = createData(Start.unlikes);
-        engine.render2("like-page.ftl", data, resp);
+        engine.render("like-page.ftl", data, resp);
     }
 
 
