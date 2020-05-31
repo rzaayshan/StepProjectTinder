@@ -1,9 +1,12 @@
 package org.step.tinder.servlet;
 
+import io.vavr.Function1;
+import io.vavr.collection.Map;
 import org.step.tinder.DAO.DaoMessage;
 import org.step.tinder.DAO.DaoUsers;
 import org.step.tinder.entity.Message;
 import org.step.tinder.entity.TemplateEngine;
+import org.step.tinder.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -12,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +41,7 @@ public class Chat extends HttpServlet {
         data.put("messages", messages);
         data.put("to",to);
         data.put("from",from);
-
-        data.put("image",daoUsers.getProfile(to).getImage());
+        data.put("image",daoUsers.get(to).map(User::getImage));
 
         engine.render2("chat.ftl", data, resp);
     }
@@ -50,7 +53,7 @@ public class Chat extends HttpServlet {
         String mes = req.getParameter("mes");
         String from = req.getParameter("from");
         String to = req.getParameter("to");
-        dao.addMessage(from,to,mes);
+        dao.put(new Message(from,to,LocalDateTime.now(),mes));
         List<Message> messages = dao.getMessages(from,to);
         data.put("messages", messages);
         data.put("to",to);

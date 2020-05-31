@@ -1,8 +1,8 @@
 package org.step.tinder.servlet;
 
 import org.step.tinder.DAO.DaoLikes;
-import org.step.tinder.entity.Profile;
 import org.step.tinder.entity.TemplateEngine;
+import org.step.tinder.entity.User;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +27,7 @@ public class List extends HttpServlet {
         DaoLikes daoLikes = new DaoLikes(conn);
         String uname = Arrays.stream(req.getCookies()).filter(c->c.getName().equals("uname"))
                 .map(Cookie::getValue).findFirst().get();
-        LinkedList<Profile> liked = daoLikes.getLikes(uname,true);
+        LinkedList<User> liked = daoLikes.getLikes(uname,true);
         HashMap<String, Object> data = new HashMap<>();
         data.put("users",liked);
         engine.render2("people-list.ftl", data, resp);

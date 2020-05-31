@@ -30,7 +30,7 @@ public class Main {
         TemplateEngine engine = TemplateEngine.folder("content");
 
         handler.addServlet(new ServletHolder(new Start(engine, conn)),"/start");
-        handler.addServlet(new ServletHolder(new Like(engine, conn)),"/like");
+        handler.addServlet(new ServletHolder(new LikeServlet(engine, conn)),"/like");
         handler.addServlet(new ServletHolder(new List(engine, conn)),"/list");
         handler.addServlet(new ServletHolder(new Login()),"/login");
         handler.addServlet(new ServletHolder(new Login()),"/");

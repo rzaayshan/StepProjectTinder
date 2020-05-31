@@ -1,8 +1,10 @@
 package org.step.tinder.servlet;
 
 import org.step.tinder.DAO.DaoLikes;
-import org.step.tinder.entity.Profile;
+import org.step.tinder.entity.Like;
 import org.step.tinder.entity.TemplateEngine;
+import org.step.tinder.entity.User;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,12 +15,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class Like extends HttpServlet {
+public class LikeServlet extends HttpServlet {
     private static int i=0;
     private final TemplateEngine engine;
     private final DaoLikes daoLikes;
 
-    public Like(TemplateEngine engine, Connection conn) {
+    public LikeServlet(TemplateEngine engine, Connection conn) {
         this.engine = engine;
         this.daoLikes=new DaoLikes(conn);
     }
@@ -26,6 +28,7 @@ public class Like extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         addChoice(req);
+        i++;
         if(isCheckedAll(Start.unlikes)){
             i=0;
             resp.sendRedirect("/list");
@@ -41,14 +44,14 @@ public class Like extends HttpServlet {
                 .map(Cookie::getValue).findFirst().get();
         String choice = req.getParameter("choice");
         if(choice.equals("Like"))
-            daoLikes.addLikes(who,whom);
+            daoLikes.put(new Like(who,whom));
     }
 
-    private boolean isCheckedAll(LinkedList<Profile> unlikes){
-        return ++i>=unlikes.size();
+    private boolean isCheckedAll(LinkedList<User> unlikes){
+        return i>=unlikes.size();
     }
 
-    private HashMap<String, Object> createData(LinkedList<Profile> unlikes){
+    private HashMap<String, Object> createData(LinkedList<User> unlikes){
         HashMap<String, Object> data = new HashMap<>();
         data.put("uname",unlikes.get(i).getUname());
         data.put("image",unlikes.get(i).getImage());

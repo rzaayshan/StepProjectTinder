@@ -37,12 +37,6 @@ public class CanLogin implements Filter {
         }
         else resp.sendRedirect("/login");
     }
-
-
-
-
-
-
     @Override
     public void destroy() {
 

@@ -2,8 +2,8 @@ package org.step.tinder.servlet;
 
 
 import org.step.tinder.DAO.DaoLikes;
-import org.step.tinder.entity.Profile;
 import org.step.tinder.entity.TemplateEngine;
+import org.step.tinder.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +17,7 @@ import java.util.LinkedList;
 public class Start extends HttpServlet {
     private final TemplateEngine engine;
     private final Connection conn;
-    static LinkedList<Profile> unlikes;
+    static LinkedList<User> unlikes;
 
     public Start(TemplateEngine engine, Connection conn) {
         this.conn = conn;
