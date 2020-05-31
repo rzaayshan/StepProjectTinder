@@ -28,7 +28,7 @@ public class Like extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         addChoice(req);
-        if(isCheckedAll()){
+        if(++i>=unlikes.size()){
             i=0;
             resp.sendRedirect("/list");
         }
