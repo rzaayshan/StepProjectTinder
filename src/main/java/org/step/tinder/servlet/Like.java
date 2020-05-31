@@ -16,7 +16,6 @@ import java.util.LinkedList;
 public class Like extends HttpServlet {
     private static int i=0;
     private final TemplateEngine engine;
-    private final LinkedList<Profile> unlikes=Start.unlikes;
     private final DaoLikes daoLikes;
 
     public Like(TemplateEngine engine, Connection conn) {
@@ -27,11 +26,11 @@ public class Like extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         addChoice(req);
-        if(isCheckedAll(unlikes)){
+        if(isCheckedAll(Start.unlikes)){
             i=0;
             resp.sendRedirect("/list");
         }
-        HashMap<String,Object> data = createData();
+        HashMap<String,Object> data = createData(Start.unlikes);
         engine.render2("like-page.ftl", data, resp);
     }
 
@@ -49,7 +48,7 @@ public class Like extends HttpServlet {
         return ++i>=unlikes.size();
     }
 
-    private HashMap<String, Object> createData(){
+    private HashMap<String, Object> createData(LinkedList<Profile> unlikes){
         HashMap<String, Object> data = new HashMap<>();
         data.put("uname",unlikes.get(i).getUname());
         data.put("image",unlikes.get(i).getImage());
