@@ -30,7 +30,7 @@ public class Start extends HttpServlet {
         String uname = req.getParameter("uname");
         unlikes = daoLikes.getLikes(uname,false);
         if(unlikes.isEmpty()){
-            resp.sendRedirect("/liked");
+            resp.sendRedirect("/list");
         }
         else{
             HashMap<String, String> user = new HashMap<>();
