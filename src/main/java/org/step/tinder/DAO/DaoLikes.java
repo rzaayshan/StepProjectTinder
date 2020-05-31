@@ -18,7 +18,7 @@ public class DaoLikes implements DAO<Like> {
     private final Connection conn;
     private final String SQL_getAll = "SELECT * FROM likes";
     private final String SQL_get    = "SELECT * FROM likes WHERE who=?";
-    private final String SQL_put    = "INSERT INTO messages(sender, receiver, message, time) VALUES (?,?,?,?)";
+    private final String SQL_put    = "INSERT INTO likes(who, whom) VALUES (?,?)";
     private final String SQL_delete = "DELETE FROM likes WHERE id=?";
 
 
