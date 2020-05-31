@@ -40,7 +40,7 @@ public class Like extends HttpServlet {
         String who = Arrays.stream(req.getCookies()).filter(c->c.getName().equals("uname"))
                 .map(Cookie::getValue).findFirst().get();
         String choice = req.getParameter("choice");
-        if(choice.equals("like"))
+        if(choice.equals("Like"))
             daoLikes.addLikes(who,whom);
     }
 
