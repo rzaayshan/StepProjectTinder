@@ -12,7 +12,7 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         OutputStream os = resp.getOutputStream();
-        Files.copy(Paths.get("content","login.ftl"),os);
+        Files.copy(Paths.get("src","main","content","login.ftl"),os);
 
     }
 }
