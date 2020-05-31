@@ -1,11 +1,9 @@
 package org.step.tinder.servlet;
 
 import org.step.tinder.DAO.DaoLikes;
-import org.step.tinder.entity.AddChoice;
 import org.step.tinder.entity.Profile;
 import org.step.tinder.entity.TemplateEngine;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,35 +17,46 @@ import java.util.LinkedList;
 public class Like extends HttpServlet {
     private static int i=0;
     private final TemplateEngine engine;
-    private final AddChoice addChoice;
+    private final DaoLikes daoLikes;
+    private final LinkedList<Profile> unlikes = Start.unlikes;
 
     public Like(TemplateEngine engine, Connection conn) {
         this.engine = engine;
-        this.addChoice=new AddChoice(new DaoLikes(conn));
+        this.daoLikes=new DaoLikes(conn);
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LinkedList<Profile> unlikes = Start.unlikes;
-        HashMap<String, String> user = new HashMap<>();
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        addChoice(req);
+        checkedAll(resp);
+        HashMap<String,Object> data = createData();
+
+        engine.render2("like-page.ftl", data, resp);
+    }
+
+    private void addChoice(HttpServletRequest req){
         String whom = req.getParameter("uname");
         String who = Arrays.stream(req.getCookies()).filter(c->c.getName().equals("uname"))
                 .map(Cookie::getValue).findFirst().get();
         String choice = req.getParameter("choice");
-        addChoice.add(who,whom,choice);
-        if(i>=unlikes.size()){
+        if(choice.equals("like"))
+            daoLikes.addLikes(who,whom);
+    }
+
+    private void checkedAll(HttpServletResponse resp) throws IOException {
+        if(++i>=unlikes.size()){
             i=0;
             resp.sendRedirect("/list");
         }
-        user.put("uname",unlikes.get(i).getUname());
-        user.put("image",unlikes.get(i).getImage());
-        user.put("name",unlikes.get(i).getName());
-        user.put("surname",unlikes.get(i).getSurname());
+    }
 
-
-        engine.render("like-page.ftl", user, resp);
-
-
+    private HashMap<String, Object> createData(){
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("uname",unlikes.get(i).getUname());
+        data.put("image",unlikes.get(i).getImage());
+        data.put("name",unlikes.get(i).getName());
+        data.put("surname",unlikes.get(i).getSurname());
+        return data;
     }
 
 
