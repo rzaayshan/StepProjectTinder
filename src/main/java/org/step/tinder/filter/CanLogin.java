@@ -1,6 +1,5 @@
 package org.step.tinder.filter;
 
-import com.sun.deploy.net.HttpRequest;
 import org.step.tinder.DAO.DaoUsers;
 
 import javax.servlet.*;
