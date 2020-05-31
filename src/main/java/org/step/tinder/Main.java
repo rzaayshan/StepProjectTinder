@@ -27,7 +27,7 @@ public class Main {
 
         ServletContextHandler handler = new ServletContextHandler();
 
-        TemplateEngine engine = TemplateEngine.folder("content");
+        TemplateEngine engine = TemplateEngine.folder("resources/content");
 
         handler.addServlet(new ServletHolder(new Start(engine, conn)),"/start");
         handler.addServlet(new ServletHolder(new LikeServlet(engine, conn)),"/like");
