@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Optional;
 
 public class List extends HttpServlet {
     private final TemplateEngine engine;
@@ -27,11 +28,14 @@ public class List extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp){
         DaoLikes daoLikes = new DaoLikes(conn);
-        String uname = Arrays.stream(req.getCookies()).filter(c-> c.getName().equals("uname"))
-                .map(c->Crip.decode(c.getValue())).findFirst().get();
-        LinkedList<User> liked = daoLikes.getLikes(uname,true);
         HashMap<String, Object> data = new HashMap<>();
-        data.put("users",liked);
+        Optional<String> op = Arrays.stream(req.getCookies()).filter(c -> c.getName().equals("uname"))
+                .map(c -> Crip.decode(c.getValue())).findFirst();
+        if(op.isPresent()){
+            String uname = op.get();
+            LinkedList<User> liked = daoLikes.getLikes(uname,true);
+            data.put("users",liked);
+        }
         engine.render("people-list.ftl", data, resp);
     }
 }

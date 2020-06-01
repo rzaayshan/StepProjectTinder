@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Optional;
 
 public class LikeServlet extends HttpServlet {
     private static int i=0;
@@ -43,19 +44,18 @@ public class LikeServlet extends HttpServlet {
 
     private void addChoice(HttpServletRequest req){
         String whom = req.getParameter("uname");
-        String who = Arrays.stream(req.getCookies()).filter(c-> c.getName().equals("uname"))
-                .map(c->Crip.decode(c.getValue())).findFirst().get();
-        String choice = req.getParameter("choice");
-        if(choice.equals("Like"))
-            daoLikes.put(new Like(who,whom));
-
+        String who;
+        Optional<String> uname = Arrays.stream(req.getCookies()).filter(c -> c.getName().equals("uname"))
+                .map(c -> Crip.decode(c.getValue())).findFirst();
+        if(uname.isPresent()){
+            who=uname.get();
+            String choice = req.getParameter("choice");
+            if(choice.equals("Like"))
+                daoLikes.put(new Like(who,whom));
+        }
     }
 
-    /*private void getUnlikes(HttpServletRequest req){
-        DaoLikes daoLikes = new DaoLikes(conn);
-        String uname = req.getParameter("uname");
-        unlikes = daoLikes.getLikes(uname,false);
-    }*/
+
 
     private boolean isCheckedAll(LinkedList<User> unlikes){
         return i>=unlikes.size();
