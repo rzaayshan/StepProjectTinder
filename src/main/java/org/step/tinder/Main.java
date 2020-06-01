@@ -23,8 +23,8 @@ public class Main {
         DbSetup.migrate(HerokuEnv.jdbc_url(),HerokuEnv.jdbc_username(),HerokuEnv.jdbc_password());
         Connection conn = DbConn.create(HerokuEnv.jdbc_url(),HerokuEnv.jdbc_username(),HerokuEnv.jdbc_password());
 
-        //Server server = new Server(HerokuEnv.port());
-        Server server = new Server(8085);
+        Server server = new Server(HerokuEnv.port());
+        //Server server = new Server(8085);
 
         ServletContextHandler handler = new ServletContextHandler();
 
@@ -42,8 +42,6 @@ public class Main {
         handler.addFilter(new FilterHolder(new IsLogin(conn)),"/like", EnumSet.of(DispatcherType.REQUEST));
         handler.addFilter(new FilterHolder(new IsLogin(conn)),"/list", EnumSet.of(DispatcherType.REQUEST));
         handler.addFilter(new FilterHolder(new IsLogin(conn)),"/message", EnumSet.of(DispatcherType.REQUEST));
-
-
 
         server.setHandler(handler);
 
