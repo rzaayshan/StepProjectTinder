@@ -19,10 +19,12 @@ public class LikeServlet extends HttpServlet {
     private static int i=0;
     private final TemplateEngine engine;
     private final DaoLikes daoLikes;
+    private final Connection conn;
 
     public LikeServlet(TemplateEngine engine, Connection conn) {
         this.engine = engine;
         this.daoLikes=new DaoLikes(conn);
+        this.conn=conn;
     }
 
     @Override
@@ -46,6 +48,12 @@ public class LikeServlet extends HttpServlet {
         if(choice.equals("Like"))
             daoLikes.put(new Like(who,whom));
     }
+
+    /*private void getUnlikes(HttpServletRequest req){
+        DaoLikes daoLikes = new DaoLikes(conn);
+        String uname = req.getParameter("uname");
+        unlikes = daoLikes.getLikes(uname,false);
+    }*/
 
     private boolean isCheckedAll(LinkedList<User> unlikes){
         return i>=unlikes.size();

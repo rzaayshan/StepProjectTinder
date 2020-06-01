@@ -1,6 +1,8 @@
 package org.step.tinder;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -24,26 +26,29 @@ public class Main {
         Connection conn = DbConn.create(HerokuEnv.jdbc_url(),HerokuEnv.jdbc_username(),HerokuEnv.jdbc_password());
 
         Server server = new Server(HerokuEnv.port());
-        //Server server = new Server(8085);
 
-        ServletContextHandler handler = new ServletContextHandler();
+        ServletContextHandler context = new ServletContextHandler();
+        ResourceHandler resource = new ResourceHandler();
 
         TemplateEngine engine = TemplateEngine.folder("src/main/resources/content");
 
-        handler.addServlet(new ServletHolder(new Start(engine, conn)),"/start");
-        handler.addServlet(new ServletHolder(new LikeServlet(engine, conn)),"/like");
-        handler.addServlet(new ServletHolder(new List(engine, conn)),"/list");
-        handler.addServlet(new ServletHolder(new Login()),"/login");
-        handler.addServlet(new ServletHolder(new Login()),"/");
-        handler.addServlet(new ServletHolder(new Logout()),"/logout");
-        handler.addServlet(new ServletHolder(new Chat(engine, conn)),"/message");
-        handler.addServlet(new ServletHolder(new StaticServlet("css")), "/css/*");
-        handler.addFilter(new FilterHolder(new CanLogin(conn)),"/start", EnumSet.of(DispatcherType.REQUEST));
-        handler.addFilter(new FilterHolder(new IsLogin(conn)),"/like", EnumSet.of(DispatcherType.REQUEST));
-        handler.addFilter(new FilterHolder(new IsLogin(conn)),"/list", EnumSet.of(DispatcherType.REQUEST));
-        handler.addFilter(new FilterHolder(new IsLogin(conn)),"/message", EnumSet.of(DispatcherType.REQUEST));
+        context.addServlet(new ServletHolder(new Start(engine, conn)),"/start");
+        context.addServlet(new ServletHolder(new LikeServlet(engine, conn)),"/like");
+        context.addServlet(new ServletHolder(new List(engine, conn)),"/list");
+        context.addServlet(new ServletHolder(new Login()),"/login");
+        context.addServlet(new ServletHolder(new Login()),"/");
+        context.addServlet(new ServletHolder(new Logout()),"/logout");
+        context.addServlet(new ServletHolder(new Chat(engine, conn)),"/message");
+        //context.addServlet(new ServletHolder(new StaticServlet("css")), "/css/*");
+        context.addFilter(new FilterHolder(new CanLogin(conn)),"/start", EnumSet.of(DispatcherType.REQUEST));
+        context.addFilter(new FilterHolder(new IsLogin(conn)),"/like", EnumSet.of(DispatcherType.REQUEST));
+        context.addFilter(new FilterHolder(new IsLogin(conn)),"/list", EnumSet.of(DispatcherType.REQUEST));
+        context.addFilter(new FilterHolder(new IsLogin(conn)),"/message", EnumSet.of(DispatcherType.REQUEST));
 
-        server.setHandler(handler);
+        resource.setResourceBase("src/main/resources/content");
+
+
+        server.setHandler(new HandlerList(resource, context));
 
         server.start();
         server.join();
