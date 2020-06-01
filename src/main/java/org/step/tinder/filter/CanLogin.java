@@ -28,12 +28,8 @@ public class CanLogin implements HttpFilter {
         String uname = req.getParameter("uname");
         String pass = req.getParameter("pass");
         if(users.checkUser(uname,pass)){
-            String cookie1n = Crip.encode("uname");
-            String cookie1v = Crip.encode(uname);
-            String cookie2n = Crip.encode("pass");
-            String cookie2v = Crip.encode(pass);
-            Cookie cookie1 = new Cookie(cookie1n,cookie1v);
-            Cookie cookie2 = new Cookie(cookie2n,cookie2v);
+            Cookie cookie1 = new Cookie("uname",Crip.encode(uname));
+            Cookie cookie2 = new Cookie("pass",Crip.encode(pass));
             resp.addCookie(cookie1);
             resp.addCookie(cookie2);
             chain.doFilter(req,resp);
