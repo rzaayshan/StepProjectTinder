@@ -23,7 +23,8 @@ public class Main {
         DbSetup.migrate(HerokuEnv.jdbc_url(),HerokuEnv.jdbc_username(),HerokuEnv.jdbc_password());
         Connection conn = DbConn.create(HerokuEnv.jdbc_url(),HerokuEnv.jdbc_username(),HerokuEnv.jdbc_password());
 
-        Server server = new Server(HerokuEnv.port());
+        //Server server = new Server(HerokuEnv.port());
+        Server server = new Server(8085);
 
         ServletContextHandler handler = new ServletContextHandler();
 
