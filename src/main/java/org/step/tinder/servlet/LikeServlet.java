@@ -43,7 +43,7 @@ public class LikeServlet extends HttpServlet {
 
     private void addChoice(HttpServletRequest req){
         String whom = req.getParameter("uname");
-        String who = Arrays.stream(req.getCookies()).filter(c-> Crip.decode(c.getName()).equals("uname"))
+        String who = Arrays.stream(req.getCookies()).filter(c-> c.getName().equals("uname"))
                 .map(c->Crip.decode(c.getValue())).findFirst().get();
         String choice = req.getParameter("choice");
         if(choice.equals("Like"))

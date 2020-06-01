@@ -27,7 +27,7 @@ public class List extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp){
         DaoLikes daoLikes = new DaoLikes(conn);
-        String uname = Arrays.stream(req.getCookies()).filter(c-> Crip.decode(c.getName()).equals("uname"))
+        String uname = Arrays.stream(req.getCookies()).filter(c-> c.getName().equals("uname"))
                 .map(c->Crip.decode(c.getValue())).findFirst().get();
         LinkedList<User> liked = daoLikes.getLikes(uname,true);
         HashMap<String, Object> data = new HashMap<>();
