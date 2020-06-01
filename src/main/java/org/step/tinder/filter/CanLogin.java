@@ -14,6 +14,7 @@ public class CanLogin implements HttpFilter {
 
     public CanLogin(Connection conn) {
         this.conn = conn;
+
     }
 
     @Override
