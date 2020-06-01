@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -42,8 +43,8 @@ public class LikeServlet extends HttpServlet {
 
     private void addChoice(HttpServletRequest req){
         String whom = req.getParameter("uname");
-        String who = Arrays.stream(req.getCookies()).filter(c->c.getName().equals("uname"))
-                .map(Cookie::getValue).findFirst().get();
+        String who = Arrays.stream(req.getCookies()).filter(c->URLDecoder.decode(c.getName()).equals("uname"))
+                .map(c->URLDecoder.decode(c.getValue())).findFirst().get();
         String choice = req.getParameter("choice");
         if(choice.equals("Like"))
             daoLikes.put(new Like(who,whom));

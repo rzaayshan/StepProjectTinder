@@ -7,7 +7,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.sql.Connection;
+import java.net.URLEncoder;
 
 public class CanLogin implements HttpFilter {
     private final Connection conn;
@@ -22,9 +25,15 @@ public class CanLogin implements HttpFilter {
         DaoUsers users = new DaoUsers(conn);
         String uname = req.getParameter("uname");
         String pass = req.getParameter("pass");
+
+
         if(users.checkUser(uname,pass)){
-            Cookie cookie1 = new Cookie("uname",uname);
-            Cookie cookie2 = new Cookie("pass",pass);
+            String cookie1n = URLEncoder.encode("uname");
+            String cookie1v = URLEncoder.encode(uname);
+            String cookie2n = URLEncoder.encode("pass");
+            String cookie2v = URLEncoder.encode(pass);
+            Cookie cookie1 = new Cookie(cookie1n,cookie1v);
+            Cookie cookie2 = new Cookie(cookie2n,cookie2v);
             resp.addCookie(cookie1);
             resp.addCookie(cookie2);
             chain.doFilter(req,resp);
