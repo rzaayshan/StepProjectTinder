@@ -25,13 +25,11 @@ public class CanLogin implements HttpFilter {
         DaoUsers users = new DaoUsers(conn);
         String uname = req.getParameter("uname");
         String pass = req.getParameter("pass");
-
-
         if(users.checkUser(uname,pass)){
-            String cookie1n = URLEncoder.encode("uname",java.nio.charset.StandardCharsets.UTF_8.toString());
-            String cookie1v = URLEncoder.encode(uname,java.nio.charset.StandardCharsets.UTF_8.toString());
-            String cookie2n = URLEncoder.encode("pass",java.nio.charset.StandardCharsets.UTF_8.toString());
-            String cookie2v = URLEncoder.encode(pass,java.nio.charset.StandardCharsets.UTF_8.toString());
+            String cookie1n = URLEncoder.encode("uname","UTF-8");
+            String cookie1v = URLEncoder.encode(uname,"UTF-8");
+            String cookie2n = URLEncoder.encode("pass","UTF-8");
+            String cookie2v = URLEncoder.encode(pass,"UTF-8");
             Cookie cookie1 = new Cookie(cookie1n,cookie1v);
             Cookie cookie2 = new Cookie(cookie2n,cookie2v);
             resp.addCookie(cookie1);
