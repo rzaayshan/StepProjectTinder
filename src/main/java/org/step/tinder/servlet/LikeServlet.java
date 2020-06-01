@@ -1,16 +1,16 @@
 package org.step.tinder.servlet;
 
 import org.step.tinder.DAO.DaoLikes;
+import org.step.tinder.entity.Crip;
 import org.step.tinder.entity.Like;
 import org.step.tinder.entity.TemplateEngine;
 import org.step.tinder.entity.User;
 
-import javax.servlet.http.Cookie;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLDecoder;
 import java.sql.Connection;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,11 +43,12 @@ public class LikeServlet extends HttpServlet {
 
     private void addChoice(HttpServletRequest req){
         String whom = req.getParameter("uname");
-        String who = Arrays.stream(req.getCookies()).filter(c->URLDecoder.decode(c.getName()).equals("uname"))
-                .map(c->URLDecoder.decode(c.getValue())).findFirst().get();
+        String who = Arrays.stream(req.getCookies()).filter(c-> Crip.decode(c.getName()).equals("uname"))
+                .map(c->Crip.decode(c.getValue())).findFirst().get();
         String choice = req.getParameter("choice");
         if(choice.equals("Like"))
             daoLikes.put(new Like(who,whom));
+
     }
 
     /*private void getUnlikes(HttpServletRequest req){

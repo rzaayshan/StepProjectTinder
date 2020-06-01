@@ -1,6 +1,7 @@
 package org.step.tinder.servlet;
 
 import org.step.tinder.DAO.DaoLikes;
+import org.step.tinder.entity.Crip;
 import org.step.tinder.entity.TemplateEngine;
 import org.step.tinder.entity.User;
 
@@ -26,8 +27,8 @@ public class List extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp){
         DaoLikes daoLikes = new DaoLikes(conn);
-        String uname = Arrays.stream(req.getCookies()).filter(c-> URLDecoder.decode(c.getName()).equals("uname"))
-                .map(c->URLDecoder.decode(c.getValue())).findFirst().get();
+        String uname = Arrays.stream(req.getCookies()).filter(c-> Crip.decode(c.getName()).equals("uname"))
+                .map(c->Crip.decode(c.getValue())).findFirst().get();
         LinkedList<User> liked = daoLikes.getLikes(uname,true);
         HashMap<String, Object> data = new HashMap<>();
         data.put("users",liked);
