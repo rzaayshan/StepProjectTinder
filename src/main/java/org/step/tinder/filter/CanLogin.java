@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 
-public class CanLogin implements Filter {
+public class CanLogin implements HttpFilter {
     private final Connection conn;
 
     public CanLogin(Connection conn) {
@@ -17,14 +17,7 @@ public class CanLogin implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
-    }
-
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse resp = (HttpServletResponse) response;
+    public void doHttpFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
         DaoUsers users = new DaoUsers(conn);
         String uname = req.getParameter("uname");
         String pass = req.getParameter("pass");
@@ -34,11 +27,10 @@ public class CanLogin implements Filter {
             resp.addCookie(cookie1);
             resp.addCookie(cookie2);
             chain.doFilter(req,resp);
+        }else{
+            resp.sendRedirect("/login");
         }
-        else resp.sendRedirect("/login");
-    }
-    @Override
-    public void destroy() {
 
     }
+
 }

@@ -9,23 +9,18 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 
-public class IsLogin implements Filter {
+public class IsLogin implements HttpFilter {
     private final Connection conn;
 
     public IsLogin(Connection conn) {
         this.conn = conn;
     }
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
 
-    }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doHttpFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
         DaoUsers users = new DaoUsers(conn);
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse resp = (HttpServletResponse) response;
 
         Cookie []cookies = req.getCookies();
 
@@ -45,14 +40,15 @@ public class IsLogin implements Filter {
                 resp.addCookie(cookie2);
                 chain.doFilter(req,resp);
             }
+        } else{
+            resp.sendRedirect("/login");
         }
-
-        else resp.sendRedirect("/login");
-
-    }
-
-    @Override
-    public void destroy() {
 
     }
 }
+
+
+
+
+
+
