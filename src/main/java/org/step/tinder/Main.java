@@ -39,10 +39,10 @@ public class Main {
         context.addServlet(new ServletHolder(new Login()),"/");
         context.addServlet(new ServletHolder(new Logout()),"/logout");
         context.addServlet(new ServletHolder(new Chat(engine, conn)),"/message");
-        context.addFilter(new FilterHolder(new CanLogin(conn)),"/start", EnumSet.of(DispatcherType.REQUEST));
-        context.addFilter(new FilterHolder(new IsLogin(conn)),"/like", EnumSet.of(DispatcherType.REQUEST));
-        context.addFilter(new FilterHolder(new IsLogin(conn)),"/list", EnumSet.of(DispatcherType.REQUEST));
-        context.addFilter(new FilterHolder(new IsLogin(conn)),"/message", EnumSet.of(DispatcherType.REQUEST));
+//        context.addFilter(new FilterHolder(new CanLogin(conn)),"/start", EnumSet.of(DispatcherType.REQUEST));
+//        context.addFilter(new FilterHolder(new IsLogin(conn)),"/like", EnumSet.of(DispatcherType.REQUEST));
+//        context.addFilter(new FilterHolder(new IsLogin(conn)),"/list", EnumSet.of(DispatcherType.REQUEST));
+//        context.addFilter(new FilterHolder(new IsLogin(conn)),"/message", EnumSet.of(DispatcherType.REQUEST));
 
         resource.setResourceBase("src/main/resources/content");
 

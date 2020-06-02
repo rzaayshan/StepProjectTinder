@@ -17,7 +17,7 @@ import java.util.LinkedList;
 public class Start extends HttpServlet {
     private final TemplateEngine engine;
     private final Connection conn;
-    static LinkedList<User> unlikes;
+    private LinkedList<User> unlikes;
 
     public Start(TemplateEngine engine, Connection conn) {
         this.conn = conn;
