@@ -32,18 +32,18 @@ public class Main {
 
         TemplateEngine engine = TemplateEngine.folder("src/main/resources/content");
 
+        resource.setResourceBase("src/main/resources/content");
+
         context.addServlet(new ServletHolder(new LikeServlet(engine, conn)),"/like");
         context.addServlet(new ServletHolder(new List(engine, conn)),"/list");
         context.addServlet(new ServletHolder(new Login()),"/login");
-        context.addServlet(new ServletHolder(new Login()),"/");
         context.addServlet(new ServletHolder(new Logout()),"/logout");
         context.addServlet(new ServletHolder(new Chat(engine, conn)),"/message");
+
         context.addFilter(new FilterHolder(new CanLogin(conn)),"/like", EnumSet.of(DispatcherType.REQUEST));
         context.addFilter(new FilterHolder(new IsLogin(conn)),"/like", EnumSet.of(DispatcherType.REQUEST));
         context.addFilter(new FilterHolder(new IsLogin(conn)),"/list", EnumSet.of(DispatcherType.REQUEST));
         context.addFilter(new FilterHolder(new IsLoginMes(conn)),"/message", EnumSet.of(DispatcherType.REQUEST));
-
-        resource.setResourceBase("src/main/resources/content");
 
         server.setHandler(new HandlerList(resource, context));
 

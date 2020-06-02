@@ -16,7 +16,7 @@ public class Login extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp){
         try{
             OutputStream os = resp.getOutputStream();
-            Files.copy(Paths.get("src","main","resources","content","login.ftl"),os);
+            Files.copy(Paths.get("src","main","resources","content","index.ftl"),os);
 
         }catch (IOException ex){
             log.error("Problem with login page");
