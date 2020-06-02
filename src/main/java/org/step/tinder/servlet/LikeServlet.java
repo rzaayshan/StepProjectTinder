@@ -32,13 +32,14 @@ public class LikeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp){
+        String uname = req.getParameter("uname");
         HttpSession session = req.getSession();
-        session.setAttribute("uname",req.getParameter("uname"));
+        session.setAttribute("uname",uname);
         HashMap<String, Object> data = new HashMap<>();
         try{
             getUnlikes(req);
             if(unlikes.isEmpty()){
-                resp.sendRedirect("/list");
+                resp.sendRedirect("/list?uname="+uname);
             }
             else{
                 data = createData(req);
