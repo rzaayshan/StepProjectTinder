@@ -10,6 +10,7 @@ import org.step.tinder.entity.User;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.HashMap;
@@ -31,6 +32,8 @@ public class LikeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp){
+        HttpSession session = req.getSession();
+        session.setAttribute("uname",req.getParameter("uname"));
         HashMap<String, Object> data = new HashMap<>();
         try{
             getUnlikes(req);
@@ -56,7 +59,7 @@ public class LikeServlet extends HttpServlet {
             i++;
             if(isCheckedAll(unlikes)){
                 i=0;
-                resp.sendRedirect("/list");
+                resp.sendRedirect("/list?uname="+req.getParameter("uname"));
             }
             data = createData(req);
         }catch (IOException ex){

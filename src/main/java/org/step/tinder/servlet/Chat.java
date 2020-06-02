@@ -10,6 +10,7 @@ import org.step.tinder.entity.User;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -29,19 +30,17 @@ public class Chat extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         HashMap<String, Object> data = new HashMap<>();
-        Optional<String> fromOp = Arrays.stream(req.getCookies()).filter(c -> c.getName().equals("uname"))
-                .map(c -> Crip.de(c.getValue())).findFirst();
-        if(fromOp.isPresent()){
-            String from = fromOp.get();
-            DaoMessage dao = new DaoMessage(conn);
-            DaoUsers daoUsers = new DaoUsers(conn);
-            String to = req.getParameter("to");
-            List<Message> messages = dao.getMessages(from,to);
-            data.put("messages", messages);
-            data.put("to",to);
-            data.put("from",from);
-            data.put("image",daoUsers.get(to).map(User::getImage));
-        }
+        HttpSession session = req.getSession();
+        String from = (String) session.getAttribute("uname");
+        DaoMessage dao = new DaoMessage(conn);
+        DaoUsers daoUsers = new DaoUsers(conn);
+        String to = req.getParameter("to");
+        List<Message> messages = dao.getMessages(from,to);
+        data.put("messages", messages);
+        data.put("to",to);
+        data.put("from",from);
+        data.put("image",daoUsers.get(to).map(User::getImage));
+
         engine.render("chat.ftl", data, resp);
     }
 

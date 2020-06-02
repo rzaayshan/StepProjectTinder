@@ -27,13 +27,9 @@ public class List extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp){
         DaoLikes daoLikes = new DaoLikes(conn);
         HashMap<String, Object> data = new HashMap<>();
-        Optional<String> op = Arrays.stream(req.getCookies()).filter(c -> c.getName().equals("uname"))
-                .map(c -> Crip.de(c.getValue())).findFirst();
-        if(op.isPresent()){
-            String uname = op.get();
-            LinkedList<User> liked = daoLikes.getLikes(uname,true);
-            data.put("users",liked);
-        }
+        String uname = req.getParameter("uname");
+        LinkedList<User> liked = daoLikes.getLikes(uname,true);
+        data.put("users",liked);
         engine.render("people-list.ftl", data, resp);
     }
 }

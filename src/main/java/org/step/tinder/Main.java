@@ -3,6 +3,7 @@ package org.step.tinder;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -27,10 +28,12 @@ public class Main {
 
         Server server = new Server(HerokuEnv.port());
 
-        ServletContextHandler context = new ServletContextHandler();
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         ResourceHandler resource = new ResourceHandler();
 
         TemplateEngine engine = TemplateEngine.folder("src/main/resources/content");
+
+        context.setSessionHandler(new SessionHandler());
 
         resource.setResourceBase("src/main/resources/content");
 
