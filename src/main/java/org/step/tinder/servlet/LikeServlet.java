@@ -37,33 +37,28 @@ public class LikeServlet extends HttpServlet {
             i=0;
             resp.sendRedirect("/list");
         }
-        HashMap<String,Object> data = createData(Start.unlikes);
+        HashMap<String,Object> data = createData(Start.unlikes,req);
         engine.render("like-page.ftl", data, resp);
     }
 
 
     private void addChoice(HttpServletRequest req){
-        String whom = req.getParameter("uname");
-        String who;
-        Optional<String> uname = Arrays.stream(req.getCookies()).filter(c -> c.getName().equals("uname"))
-                .map(c -> Crip.decode(c.getValue())).findFirst();
-        if(uname.isPresent()){
-            who=uname.get();
-            String choice = req.getParameter("choice");
-            if(choice.equals("Like"))
-                daoLikes.put(new Like(who,whom));
+        String choice = req.getParameter("choice");
+        if(choice.equals("Like")){
+            String who = req.getParameter("uname");
+            String whom = req.getParameter("whom");
+            daoLikes.put(new Like(who,whom));
         }
     }
-
-
 
     private boolean isCheckedAll(LinkedList<User> unlikes){
         return i>=unlikes.size();
     }
 
-    private HashMap<String, Object> createData(LinkedList<User> unlikes){
+    private HashMap<String, Object> createData(LinkedList<User> unlikes, HttpServletRequest req){
         HashMap<String, Object> data = new HashMap<>();
-        data.put("uname",unlikes.get(i).getUname());
+        data.put("uname",req.getParameter("uname"));
+        data.put("whom",unlikes.get(i).getUname());
         data.put("image",unlikes.get(i).getImage());
         data.put("name",unlikes.get(i).getName());
         data.put("surname",unlikes.get(i).getSurname());
