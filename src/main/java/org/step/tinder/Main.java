@@ -14,7 +14,6 @@ import org.step.tinder.servlet.*;
 import org.step.tinder.db.DbConn;
 import org.step.tinder.db.DbSetup;
 import org.step.tinder.heroku.HerokuEnv;
-
 import javax.servlet.DispatcherType;
 import java.sql.Connection;
 import java.util.EnumSet;
@@ -33,7 +32,6 @@ public class Main {
 
         TemplateEngine engine = TemplateEngine.folder("src/main/resources/content");
 
-        //context.addServlet(new ServletHolder(new Start(engine, conn)),"/start");
         context.addServlet(new ServletHolder(new LikeServlet(engine, conn)),"/like");
         context.addServlet(new ServletHolder(new List(engine, conn)),"/list");
         context.addServlet(new ServletHolder(new Login()),"/login");

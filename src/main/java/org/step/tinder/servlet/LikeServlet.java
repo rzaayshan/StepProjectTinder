@@ -1,5 +1,6 @@
 package org.step.tinder.servlet;
 
+import lombok.extern.log4j.Log4j2;
 import org.step.tinder.DAO.DaoLikes;
 import org.step.tinder.entity.Like;
 import org.step.tinder.entity.TemplateEngine;
@@ -14,6 +15,7 @@ import java.sql.Connection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+@Log4j2
 public class LikeServlet extends HttpServlet {
     private int i=0;
     private final TemplateEngine engine;
@@ -28,26 +30,40 @@ public class LikeServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        getUnlikes(req);
-        if(unlikes.isEmpty()){
-            resp.sendRedirect("/list");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp){
+        HashMap<String, Object> data = new HashMap<>();
+        try{
+            getUnlikes(req);
+            if(unlikes.isEmpty()){
+                resp.sendRedirect("/list");
+            }
+            else{
+                data = createData(req);
+            }
+        }catch (IOException ex){
+            log.error("Problem with redirect to list");
+            i=0;
+            data = createData(req);
         }
-        else{
-            HashMap<String, Object> data = createData(req);
-            engine.render("like-page.ftl", data, resp);
-        }
+        engine.render("like-page.ftl", data, resp);
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        addChoice(req);
-        i++;
-        if(isCheckedAll(unlikes)){
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp){
+        HashMap<String,Object> data;
+        try{
+            addChoice(req);
+            i++;
+            if(isCheckedAll(unlikes)){
+                i=0;
+                resp.sendRedirect("/list");
+            }
+            data = createData(req);
+        }catch (IOException ex){
+            log.error("Problem with redirect to list");
             i=0;
-            resp.sendRedirect("/list");
+            data = createData(req);
         }
-        HashMap<String,Object> data = createData(req);
         engine.render("like-page.ftl", data, resp);
     }
 
