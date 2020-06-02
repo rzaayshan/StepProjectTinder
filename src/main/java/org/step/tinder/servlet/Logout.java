@@ -1,23 +1,16 @@
 package org.step.tinder.servlet;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
+import org.step.tinder.cookies.Cookieh;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class Logout extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Cookie []cookies = req.getCookies();
-        Arrays.stream(cookies)
-                .forEach(c -> {
-                    c.setMaxAge(0);
-                    resp.addCookie(c);
-                });
-
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Cookieh.removeCookie(req,resp);
         resp.sendRedirect("/login");
     }
 }

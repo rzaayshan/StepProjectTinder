@@ -1,4 +1,4 @@
-package org.step.tinder.entity;
+package org.step.tinder.cookies;
 
 import java.util.Base64;
 

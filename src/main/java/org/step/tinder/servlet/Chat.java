@@ -1,24 +1,21 @@
 package org.step.tinder.servlet;
 
-import io.vavr.Function1;
-import io.vavr.collection.Map;
 import org.step.tinder.DAO.DaoMessage;
 import org.step.tinder.DAO.DaoUsers;
-import org.step.tinder.entity.Crip;
+import org.step.tinder.cookies.Crip;
 import org.step.tinder.entity.Message;
 import org.step.tinder.entity.TemplateEngine;
 import org.step.tinder.entity.User;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.sql.Connection;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class Chat extends HttpServlet {
     private final TemplateEngine engine;
@@ -30,7 +27,7 @@ public class Chat extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         HashMap<String, Object> data = new HashMap<>();
         Optional<String> fromOp = Arrays.stream(req.getCookies()).filter(c -> c.getName().equals("uname"))
                 .map(c -> Crip.de(c.getValue())).findFirst();
@@ -49,7 +46,7 @@ public class Chat extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         HashMap<String, Object> data = new HashMap<>();
         DaoMessage dao = new DaoMessage(conn);
         String mes = req.getParameter("mes");

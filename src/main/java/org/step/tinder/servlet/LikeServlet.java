@@ -1,7 +1,6 @@
 package org.step.tinder.servlet;
 
 import org.step.tinder.DAO.DaoLikes;
-import org.step.tinder.entity.Crip;
 import org.step.tinder.entity.Like;
 import org.step.tinder.entity.TemplateEngine;
 import org.step.tinder.entity.User;
@@ -12,10 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Optional;
 
 public class LikeServlet extends HttpServlet {
     private static int i=0;

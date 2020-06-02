@@ -1,18 +1,13 @@
 package org.step.tinder.filter;
 
 import org.step.tinder.DAO.DaoUsers;
-import org.step.tinder.entity.Crip;
+import org.step.tinder.cookies.Cookieh;
 
 import javax.servlet.*;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.sql.Connection;
-import java.net.URLEncoder;
-import java.util.Base64;
 
 public class CanLogin implements HttpFilter {
     private final Connection conn;
@@ -28,10 +23,8 @@ public class CanLogin implements HttpFilter {
         String uname = req.getParameter("uname");
         String pass = req.getParameter("pass");
         if(users.checkUser(uname,pass)){
-            Cookie cookie1 = new Cookie("uname",Crip.en(uname));
-            Cookie cookie2 = new Cookie("pass",Crip.en(pass));
-            resp.addCookie(cookie1);
-            resp.addCookie(cookie2);
+            Cookieh.addCookie(resp,"uname",uname);
+            Cookieh.addCookie(resp,"pass",pass);
             chain.doFilter(req,resp);
         }else{
             resp.sendRedirect("/login");

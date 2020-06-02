@@ -1,15 +1,13 @@
 package org.step.tinder.servlet;
 
 import org.step.tinder.DAO.DaoLikes;
-import org.step.tinder.entity.Crip;
+import org.step.tinder.cookies.Crip;
 import org.step.tinder.entity.TemplateEngine;
 import org.step.tinder.entity.User;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URLDecoder;
 import java.sql.Connection;
 import java.util.Arrays;
 import java.util.HashMap;
