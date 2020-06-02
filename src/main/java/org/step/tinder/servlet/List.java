@@ -27,7 +27,7 @@ public class List extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp){
         DaoLikes daoLikes = new DaoLikes(conn);
         HashMap<String, Object> data = new HashMap<>();
-        String uname = req.getParameter("uname");
+        String uname = (String) req.getSession().getAttribute("uname");
         LinkedList<User> liked = daoLikes.getLikes(uname,true);
         data.put("users",liked);
         engine.render("people-list.ftl", data, resp);

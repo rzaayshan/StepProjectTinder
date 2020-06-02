@@ -39,7 +39,7 @@ public class LikeServlet extends HttpServlet {
         try{
             getUnlikes(req);
             if(unlikes.isEmpty()){
-                resp.sendRedirect("/list?uname="+uname);
+                resp.sendRedirect("/list");
             }
             else{
                 data = createData(req);
@@ -60,7 +60,7 @@ public class LikeServlet extends HttpServlet {
             i++;
             if(isCheckedAll(unlikes)){
                 i=0;
-                resp.sendRedirect("/list?uname="+req.getParameter("uname"));
+                resp.sendRedirect("/list");
             }
             data = createData(req);
         }catch (IOException ex){
@@ -81,7 +81,7 @@ public class LikeServlet extends HttpServlet {
     private void addChoice(HttpServletRequest req){
         String choice = req.getParameter("choice");
         if(choice.equals("Like")){
-            String who = req.getParameter("uname");
+            String who = (String) req.getSession().getAttribute("uname");
             String whom = req.getParameter("whom");
             daoLikes.put(new Like(who,whom));
         }
@@ -93,7 +93,6 @@ public class LikeServlet extends HttpServlet {
 
     private HashMap<String, Object> createData(HttpServletRequest req){
         HashMap<String, Object> data = new HashMap<>();
-        data.put("uname",req.getParameter("uname"));
         data.put("whom",unlikes.get(i).getUname());
         data.put("image",unlikes.get(i).getImage());
         data.put("name",unlikes.get(i).getName());
