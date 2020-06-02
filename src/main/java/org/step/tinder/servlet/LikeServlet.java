@@ -42,12 +42,12 @@ public class LikeServlet extends HttpServlet {
                 resp.sendRedirect("/list");
             }
             else{
-                data = createData(req);
+                data = createData();
             }
         }catch (IOException ex){
             log.error("Problem with redirect to list");
             i=0;
-            data = createData(req);
+            data = createData();
         }
         engine.render("like-page.ftl", data, resp);
     }
@@ -62,11 +62,11 @@ public class LikeServlet extends HttpServlet {
                 i=0;
                 resp.sendRedirect("/list");
             }
-            data = createData(req);
+            data = createData();
         }catch (IOException ex){
             log.error("Problem with redirect to list");
             i=0;
-            data = createData(req);
+            data = createData();
         }
         engine.render("like-page.ftl", data, resp);
     }
@@ -91,7 +91,7 @@ public class LikeServlet extends HttpServlet {
         return i>=unlikes.size();
     }
 
-    private HashMap<String, Object> createData(HttpServletRequest req){
+    private HashMap<String, Object> createData(){
         HashMap<String, Object> data = new HashMap<>();
         data.put("whom",unlikes.get(i).getUname());
         data.put("image",unlikes.get(i).getImage());
