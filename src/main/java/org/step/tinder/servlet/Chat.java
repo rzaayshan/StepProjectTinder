@@ -4,6 +4,7 @@ import io.vavr.Function1;
 import io.vavr.collection.Map;
 import org.step.tinder.DAO.DaoMessage;
 import org.step.tinder.DAO.DaoUsers;
+import org.step.tinder.entity.Crip;
 import org.step.tinder.entity.Message;
 import org.step.tinder.entity.TemplateEngine;
 import org.step.tinder.entity.User;
@@ -16,8 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
 
 public class Chat extends HttpServlet {
@@ -32,17 +32,19 @@ public class Chat extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HashMap<String, Object> data = new HashMap<>();
-        String from = Arrays.stream(req.getCookies()).filter(c->c.getName().equals("uname"))
-                .map(Cookie::getValue).findFirst().get();
-        DaoMessage dao = new DaoMessage(conn);
-        DaoUsers daoUsers = new DaoUsers(conn);
-        String to = req.getParameter("to");
-        List<Message> messages = dao.getMessages(from,to);
-        data.put("messages", messages);
-        data.put("to",to);
-        data.put("from",from);
-        data.put("image",daoUsers.get(to).map(User::getImage));
-
+        Optional<String> fromOp = Arrays.stream(req.getCookies()).filter(c -> c.getName().equals("uname"))
+                .map(c -> Crip.de(c.getValue())).findFirst();
+        if(fromOp.isPresent()){
+            String from = fromOp.get();
+            DaoMessage dao = new DaoMessage(conn);
+            DaoUsers daoUsers = new DaoUsers(conn);
+            String to = req.getParameter("to");
+            List<Message> messages = dao.getMessages(from,to);
+            data.put("messages", messages);
+            data.put("to",to);
+            data.put("from",from);
+            data.put("image",daoUsers.get(to).map(User::getImage));
+        }
         engine.render("chat.ftl", data, resp);
     }
 
