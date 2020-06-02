@@ -45,7 +45,7 @@ public class Start extends HttpServlet {
     private HashMap<String, Object> createData(HttpServletRequest req){
         HashMap<String, Object> data = new HashMap<>();
         data.put("uname", req.getParameter("uname"));
-        data.put("who",unlikes.get(0).getUname());
+        data.put("whom",unlikes.get(0).getUname());
         data.put("image",unlikes.get(0).getImage());
         data.put("name",unlikes.get(0).getName());
         data.put("surname",unlikes.get(0).getSurname());
