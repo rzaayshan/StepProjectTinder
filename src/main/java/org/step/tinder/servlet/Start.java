@@ -25,13 +25,13 @@ public class Start extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         getUnlikes(req);
         if(unlikes.isEmpty()){
             resp.sendRedirect("/list");
         }
         else{
-            HashMap<String, Object> data = createData();
+            HashMap<String, Object> data = createData(req);
             engine.render("like-page.ftl", data, resp);
         }
     }
@@ -42,9 +42,10 @@ public class Start extends HttpServlet {
         unlikes = daoLikes.getLikes(uname,false);
     }
 
-    private HashMap<String, Object> createData(){
+    private HashMap<String, Object> createData(HttpServletRequest req){
         HashMap<String, Object> data = new HashMap<>();
-        data.put("uname",unlikes.get(0).getUname());
+        data.put("uname", req.getParameter("uname"));
+        data.put("who",unlikes.get(0).getUname());
         data.put("image",unlikes.get(0).getImage());
         data.put("name",unlikes.get(0).getName());
         data.put("surname",unlikes.get(0).getSurname());
