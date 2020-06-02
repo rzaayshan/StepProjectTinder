@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 
-public class CanLogin implements HttpFilter {
+public class CanLogin implements HttpPostFilter {
     private final Connection conn;
 
     public CanLogin(Connection conn) {
@@ -18,7 +18,7 @@ public class CanLogin implements HttpFilter {
     }
 
     @Override
-    public void doHttpFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
+    public void doHttpPostFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
         DaoUsers users = new DaoUsers(conn);
         String uname = req.getParameter("uname");
         String pass = req.getParameter("pass");

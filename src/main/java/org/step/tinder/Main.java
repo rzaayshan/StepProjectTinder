@@ -9,6 +9,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.step.tinder.filter.CanLogin;
 import org.step.tinder.filter.IsLogin;
 import org.step.tinder.entity.TemplateEngine;
+import org.step.tinder.filter.IsLoginMes;
 import org.step.tinder.servlet.*;
 import org.step.tinder.db.DbConn;
 import org.step.tinder.db.DbSetup;
@@ -32,17 +33,17 @@ public class Main {
 
         TemplateEngine engine = TemplateEngine.folder("src/main/resources/content");
 
-        context.addServlet(new ServletHolder(new Start(engine, conn)),"/start");
+        //context.addServlet(new ServletHolder(new Start(engine, conn)),"/start");
         context.addServlet(new ServletHolder(new LikeServlet(engine, conn)),"/like");
         context.addServlet(new ServletHolder(new List(engine, conn)),"/list");
         context.addServlet(new ServletHolder(new Login()),"/login");
         context.addServlet(new ServletHolder(new Login()),"/");
         context.addServlet(new ServletHolder(new Logout()),"/logout");
         context.addServlet(new ServletHolder(new Chat(engine, conn)),"/message");
-//        context.addFilter(new FilterHolder(new CanLogin(conn)),"/start", EnumSet.of(DispatcherType.REQUEST));
-//        context.addFilter(new FilterHolder(new IsLogin(conn)),"/like", EnumSet.of(DispatcherType.REQUEST));
-//        context.addFilter(new FilterHolder(new IsLogin(conn)),"/list", EnumSet.of(DispatcherType.REQUEST));
-//        context.addFilter(new FilterHolder(new IsLogin(conn)),"/message", EnumSet.of(DispatcherType.REQUEST));
+        context.addFilter(new FilterHolder(new CanLogin(conn)),"/like", EnumSet.of(DispatcherType.REQUEST));
+        context.addFilter(new FilterHolder(new IsLogin(conn)),"/like", EnumSet.of(DispatcherType.REQUEST));
+        context.addFilter(new FilterHolder(new IsLogin(conn)),"/list", EnumSet.of(DispatcherType.REQUEST));
+        context.addFilter(new FilterHolder(new IsLoginMes(conn)),"/message", EnumSet.of(DispatcherType.REQUEST));
 
         resource.setResourceBase("src/main/resources/content");
 
