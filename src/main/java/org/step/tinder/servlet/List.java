@@ -30,7 +30,7 @@ public class List extends HttpServlet {
         DaoLikes daoLikes = new DaoLikes(conn);
         HashMap<String, Object> data = new HashMap<>();
         Optional<String> op = Arrays.stream(req.getCookies()).filter(c -> c.getName().equals("uname"))
-                .map(c -> Crip.decode(c.getValue())).findFirst();
+                .map(c -> Crip.de(c.getValue())).findFirst();
         if(op.isPresent()){
             String uname = op.get();
             LinkedList<User> liked = daoLikes.getLikes(uname,true);
