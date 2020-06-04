@@ -4,7 +4,6 @@ package org.step.tinder.DAO;
 import lombok.extern.log4j.Log4j2;
 import org.step.tinder.entity.User;
 import java.sql.*;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
 
@@ -20,23 +19,6 @@ public class DaoUsers implements DAO<User>{
     public DaoUsers(Connection conn) {
         this.conn = conn;
     }
-
-    public boolean checkUser(String uname, String pass) {
-        try {
-            String query = "select uname,pass from users;";
-            PreparedStatement st = conn.prepareStatement(query);
-            ResultSet rs = st.executeQuery();
-            HashMap<String, String> users = new HashMap<>();
-            while (rs.next()){
-                users.put(rs.getString("uname"),rs.getString("pass"));
-            }
-            return users.containsKey(uname) && users.get(uname).equals(pass);
-        } catch (SQLException throwables) {
-            log.error("User can't be checked");
-            return false;
-        }
-    }
-
     @Override
     public LinkedList<User> getAll() {
         try {
@@ -44,8 +26,8 @@ public class DaoUsers implements DAO<User>{
             PreparedStatement st = conn.prepareStatement(SQL_getAll);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Optional<User> profile = SQLData(rs);
-                profile.ifPresent(users::add);
+                Optional<User> user = SQLData(rs);
+                user.ifPresent(users::add);
             }
             return users;
         } catch (SQLException throwables) {
@@ -63,18 +45,20 @@ public class DaoUsers implements DAO<User>{
             rs.next();
             return SQLData(rs);
         } catch (SQLException throwables) {
-            log.error("Profile can't be found to get");
+            log.error("User can't be found to get");
             return Optional.empty();
         }
     }
 
     private Optional<User> SQLData(ResultSet rs) {
         try {
+            int id = rs.getInt("id");
             String uname = rs.getString("uname");
+            String pass = rs.getString("pass");
             String image = rs.getString("image");
             String name = rs.getString("name");
             String surname = rs.getString("surname");
-            return Optional.of(User.Profile(uname,image,name,surname));
+            return Optional.of(new User(id,uname,pass,name,surname,image));
         } catch (SQLException throwables) {
             log.error("Columns can't be found");
             return Optional.empty();
@@ -106,4 +90,15 @@ public class DaoUsers implements DAO<User>{
             log.error("User can't be deleted");
         }
     }
+
+    public boolean checkUser(String uname, String pass) {
+        return getAll().stream()
+                .anyMatch(u->u.getUname().equals(uname) && u.getPass().equals(pass));
+    }
+
+    public boolean checkCookie(String cookie) {
+        return getAll().stream().map(u->String.format("%s:%s",u.getUname(),u.getPass()))
+                .anyMatch(s->s.equals(cookie));
+    }
+
 }

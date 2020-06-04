@@ -19,7 +19,7 @@ public interface HttpFilter extends Filter {
         else {
             filterChain.doFilter(servletRequest,servletResponse);
         }
-    };
+    }
 
 
     default void destroy(){}

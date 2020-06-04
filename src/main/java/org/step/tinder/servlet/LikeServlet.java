@@ -6,11 +6,9 @@ import org.step.tinder.entity.Like;
 import org.step.tinder.entity.TemplateEngine;
 import org.step.tinder.entity.User;
 
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.HashMap;
@@ -32,24 +30,20 @@ public class LikeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp){
-        String uname = req.getParameter("uname");
-        HttpSession session = req.getSession();
-        session.setAttribute("uname",uname);
-        HashMap<String, Object> data = new HashMap<>();
+        HashMap<String, Object> data;
         try{
             getUnlikes(req);
             if(unlikes.isEmpty()){
                 resp.sendRedirect("/list");
             }
-            else{
-                data = createData();
-            }
+            data = createData(unlikes.get(i));
+            engine.render("like-page.ftl", data, resp);
         }catch (IOException ex){
             log.error("Problem with redirect to list");
-            i=0;
-            data = createData();
+            data = createData(unlikes.get(i));
+            engine.render("like-page.ftl", data, resp);
         }
-        engine.render("like-page.ftl", data, resp);
+
     }
 
     @Override
@@ -58,17 +52,21 @@ public class LikeServlet extends HttpServlet {
         try{
             addChoice(req);
             i++;
-            if(isCheckedAll(unlikes)){
+            if(isCheckedAll()){
                 i=0;
                 resp.sendRedirect("/list");
             }
-            data = createData();
+            data = createData(unlikes.get(i));
+            engine.render("like-page.ftl", data, resp);
         }catch (IOException ex){
             log.error("Problem with redirect to list");
             i=0;
-            data = createData();
+            data = createData(unlikes.get(i));
+            engine.render("like-page.ftl", data, resp);
         }
-        engine.render("like-page.ftl", data, resp);
+    }
+    private boolean isCheckedAll(){
+        return i>=unlikes.size();
     }
 
     private void getUnlikes(HttpServletRequest req){
@@ -87,16 +85,12 @@ public class LikeServlet extends HttpServlet {
         }
     }
 
-    private boolean isCheckedAll(LinkedList<User> unlikes){
-        return i>=unlikes.size();
-    }
-
-    private HashMap<String, Object> createData(){
+    private HashMap<String, Object> createData(User user){
         HashMap<String, Object> data = new HashMap<>();
-        data.put("whom",unlikes.get(i).getUname());
-        data.put("image",unlikes.get(i).getImage());
-        data.put("name",unlikes.get(i).getName());
-        data.put("surname",unlikes.get(i).getSurname());
+        data.put("whom",user.getUname());
+        data.put("image",user.getImage());
+        data.put("name",user.getName());
+        data.put("surname",user.getSurname());
         return data;
     }
 }

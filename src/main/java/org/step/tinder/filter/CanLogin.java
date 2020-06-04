@@ -26,8 +26,8 @@ public class CanLogin implements HttpPostFilter {
             String uname = req.getParameter("uname");
             String pass = req.getParameter("pass");
             if(users.checkUser(uname,pass)){
-                Cookieh.addCookie(resp,"uname",uname);
-                Cookieh.addCookie(resp,"pass",pass);
+                Cookieh.addCookie(resp,"info",String.format("%s:%s",uname,pass));
+                req.getSession().setAttribute("uname",uname);
                 chain.doFilter(req,resp);
             }else{
                 resp.sendRedirect("/login");

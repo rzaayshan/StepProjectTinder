@@ -12,15 +12,4 @@ public class User {
     private String name;
     private String surname;
     private String image;
-
-    public User(String uname, String image, String name, String surname) {
-        this.uname=uname;
-        this.image=image;
-        this.name=name;
-        this.surname=surname;
-    }
-
-    public static User Profile(String uname,String image,String name,String surname){
-        return new User(uname,image,name,surname);
-    }
 }
