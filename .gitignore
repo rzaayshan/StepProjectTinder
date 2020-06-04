@@ -1,3 +1,12 @@
-/target/
+# files in the root folder and all subfolders
+.classpath
+.factorypath
+.project
+*.iml
+
+# folders in all subfolders
+target/
+
+# folders in the root rolder only
 /.idea/
-/StepProject.iml
+/.settings/
